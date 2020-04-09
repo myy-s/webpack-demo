@@ -1,21 +1,13 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const base = require('./webpack.config.base')
 const path = require("path");
 
 module.exports = {
+  ...base,
   mode: "production",
-  devServer: {
-    contentBase: "./dist",
-  },
-  entry: "./src/index.js",
-  output: {
-    filename: "index.[contenthash].js",
-  },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "lalala123",
-      template: "src/assets/index.html",
-    }),
+    ...base.plugins,
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
       chunkFilename: "[id].[contenthash].css",
@@ -23,19 +15,16 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: "../",
-            },
+    rules: [{
+      test: /\.css$/,
+      use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: "../",
           },
-          "css-loader",
-        ],
-      },
-    ],
+        },
+        "css-loader",
+      ],
+    }, ],
   },
 };
